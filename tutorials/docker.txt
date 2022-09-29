@@ -22,6 +22,14 @@ docker --help => returns a list of commands available in Docker along with the p
 //=> docker pull node ----- dowload cheyyaaan 
 //=>docker images node:latest
 
+//=> docker rmi ------ remove images by their id
+//=>docker rm  ------- removes containers by their name or ID.
+
+
+
+=> docker pull mongo
+=>docker pull node
+
 
 //// docker file ///
 // docker can build  images automatically by reading instruction from dockerfile.Dockerfile 
@@ -33,6 +41,10 @@ docker --help => returns a list of commands available in Docker along with the p
 //=> docker build -t my_app:1 .   ------ athinnu peru kodukkenekil
 //=> docker ps   --- list out all the running container
 //=> docker stop f8e882d371e4  ---- stop the running container
+
+docker compose up -d
+
+//remove cheyyannekil => docker rm  3cd40acd0130
 
 
 
@@ -47,6 +59,42 @@ docker --help => returns a list of commands available in Docker along with the p
 
 //////// tcp or udp port  /////////
 //=> docker run -p 8000:8000 -p 8000:80/tcp -p 8000:80/udp node_testapi:1.0.0 .
+
+
+/////////  Node js + mongoDB /////////
+// WE NEED TWO CONTAINER , ONE FOR NODE JS applicaion , other for mongoDB application
+
+//files we needed => Dockerfile
+                  =>docker-compose.yml
+                  =>.dockerignore
+
+//=> docker build -t nodejsapiapp .
+
+//=> docker compose up
+
+
+
+
+
+#To list running containers
+sudo docker ps
+#To list all the available containers
+sudo docker ps -a
+#To start a stopped container
+sudo docker start <container_name/ID>
+#To stop a running container
+sudo docker stop <container_name/ID>
+
+
+////////////////////////////////////////////
+
+//container create cheyyaaan => docker compose up -d
+// list the running container => docker ps
+                              => docker ps -a
+                              =>  docker ps -a -q
+
+// remove container=> docker stop containerId 
+                   => docker rm containerId
 
 
 
