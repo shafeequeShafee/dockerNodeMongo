@@ -70,20 +70,20 @@ docker compose up -d
 
 //=> docker build -t nodejsapiapp .
 
-//=> docker compose up
+ run cheyyannekil//=> docker compose up .
 
 
 
 
 
 #To list running containers
-sudo docker ps
+ docker ps
 #To list all the available containers
-sudo docker ps -a
+ docker ps -a
 #To start a stopped container
-sudo docker start <container_name/ID>
+ docker start <container_name/ID>
 #To stop a running container
-sudo docker stop <container_name/ID>
+docker stop <container_name/ID>
 
 
 ////////////////////////////////////////////
@@ -97,6 +97,172 @@ sudo docker stop <container_name/ID>
                    => docker rm containerId
 
 
+///////////  we canot acess mogoDb data in docker from local machine  ///////////
 
+// if we want => stop both container => docker compose down
+
+
+////// docker-compose.yml file is responsible for starting container , that is nodejs and mongodb container
+
+
+
+///////////////  Nodejs mongoDb ///////////////
+
+Steps involved:
+
+Setup your Nodejs application.
+Create Dockerfile’s for each service.
+Define services using the Compose file.
+Run docker-compose to build the application.
+
+
+
+
+
+Building and Testing above Dockerfile :
+
+To build a Docker image from Dockerfile use command :
+docker build -t <name_for_image> .
+-t represents tag name
+. represents the current directory
+example: docker build -t nodeapi
+
+
+
+
+
+Run image to get the container:
+
+To run that image use:
+docker run -d -p <Browser_expose_port>:<application port> <image_id/name>
+example: docker run -p 4000:3000  nodeapi
+
+
+
+
+
+
+Now to monitor the container use commands:
+
+#To list running containers
+docker ps
+#To list all the available containers
+docker ps -a
+#To start a stopped container
+docker start <container_name/ID>
+#To stop a running container
+docker stop <container_name/ID>
+
+
+
+
+
+I didn’t create a mongo image because I will be using the official mongo image 
+from docker hub in the docker compose file.
+
+
+
+Docker Compose is a tool for defining and running multi-container Docker applications. 
+With Compose, you use a YAML file to configure your application’s services. 
+Then, with a single command, you create and start all the services/containers from your configuration.
+
+
+
+
+Creating a docker-compose.yml
+
+Now let’s create a docker-compose.yml file in the same directory. 
+We will define our services/containers inside this file. When creating a docker-compose file,
+ the .yml extension is a must.
+
+docker-compose.yml
+
+version: "3"
+services:
+       login-app:
+           container_name: login-app
+           image: latest123/login-app
+           restart: always
+           build: .
+           ports:
+             - "7500:7500"
+           links:
+             - mongo
+       mongo:
+             container_name: mongo
+             image: mongo
+             volumes:
+               - ./data:/data/db
+             ports:
+               - '27018:27017'
+
+
+
+
+Breaking down the above code:
+
+# This compose file defines two services: login-app and mongo
+
+# container_name field value are used to name the container created.
+For the login-app service, I named it login-app. This way naming a 
+container properly makes it easier to work with and can avoid randomly 
+generated container names (this is merely a personal preference, 
+the name of the service and containers do not have to be the same).
+
+# build field is where we specify the path to dockerfile to create the image
+I am building the login-app image using the Dockerfile in the project directory 
+and mapping the host/browser port to the container/service/application port.
+
+You could either build the image by running the dockerfile then specify that image
+ name in the dockerfile or directly provide the path of docker file in compose using
+  build command. When you specify both it uses build command.
+
+# Our second service is MongoDB but this time instead of building our own mongo image,
+ we simply pull down the standard mongo image from the Docker Hub registry. 
+ As we have learned earlier if an image isn’t available locally docker daemon 
+ will try to pull it from docker hub.
+
+# As information in a DataBase is non-volatile, we need persistent storage. 
+So, we mount the external host directory /data (this is where I have added some 
+initial data into my database when I ran the application locally) to the container directory /data/db.
+
+#Containers are stateless, which means when a container is terminate all of its data is gone.
+ Mounting volumes gives us persistent storage so when starting we restart a container, 
+ Docker Compose will use this persistent storage where all of the 
+ previous containers data is stored, and copy it to the new container, ensuring that no data is lost.
+
+# Finally, we use links command to link both the services.
+This way the MongoDB service is reachable from the login-app service.
+
+
+
+Step4: Run docker-compose to build the application
+From the project directory, start your application by running
+docker-compose up
+
+
+
+
+
+
+
+
+
+
+inspect images:
+docker inspect <tag or id>
+inspect running container:
+docker inspect <container-id/name>
+
+
+
+Stop the application containers:
+
+Either by running docker-compose down in the second terminal in the project directory 
+or by hitting CTRL+C in the original terminal where you started the app.
+
+
+If you want to again run the application then run the command
+docker-compose up .
 
 

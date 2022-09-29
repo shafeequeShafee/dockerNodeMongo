@@ -2,7 +2,7 @@ version: '3.9'
 services:
   #Mongodb services
   mongo_db:
-     container_name: db_containerMongo
+     container_name: db_contanerMngo
      image: mongo:latest
      restart: always
      volumes: 

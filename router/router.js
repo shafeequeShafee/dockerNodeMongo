@@ -8,7 +8,7 @@ const {
 }=require("../controller/controller")
 
 routerEmployee.get('/',(req,res)=>{
-    res.send('hello sfq')
+    res.send('hiii sad boy ! all is well')
 })
 routerEmployee.get('/getEmployeesDetails', getEmployeesDetails)
 
