@@ -1,0 +1,33 @@
+version: '3.9'
+services:
+  #Mongodb services
+  mongo_db:
+     container_name: db_containerdb3333
+     image: mongo:latest
+     restart: always
+     volumes: 
+       - mongo_db:/data/db
+  
+  #node js api service
+  api:
+    build: .
+    ports:
+       - "4000:4000"
+    
+    environment:
+      PORT: 4000
+      MONGODB_URL: mongodb://mongo_db:27017
+      DB_NAME: SfqDBex
+      NAME: sfq
+
+    depends_on:
+      - mongo_db
+
+volumes:
+  mongo_db: {}
+
+
+
+      
+
+  
