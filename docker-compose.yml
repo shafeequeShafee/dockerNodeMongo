@@ -5,6 +5,10 @@ services:
      container_name: db_contanerMngo
      image: mongo:latest
      restart: always
+     #enee njammakku local host nnu dockerillae  mongodB  aayi connect cheyyannekil
+     ports:
+       - "2717:27017"
+
      volumes: 
        - mongo_db:/data/db
   
